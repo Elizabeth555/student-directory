@@ -20,13 +20,12 @@ end
 
 def print(students)
 
-    students.each_with_index {|student ,index|
-      if student[:name].length < 12
-      puts "#{index +1}. #{student[:name]} (#{student[:cohort]} cohort)"
-    else
-      puts "Error: name too long"
-    end
-    }
+  count = 0
+  while count < students.length
+      puts "#{students[0][:name]} (#{students[1][:cohort]} cohort)"
+    count = count + 1
+
+  end
 end
 
 def filter_letter(students)
