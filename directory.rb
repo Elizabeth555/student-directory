@@ -6,7 +6,9 @@ def add_student_data(name,cohort,height,hobby)
 end
 
 def save_students
-  file = File.open("students.csv", "w")
+  puts "What file do you want to save as?"
+  filename = gets.chomp
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:height], student[:hobby]]
     csv_line = student_data.join(",")
@@ -16,13 +18,17 @@ def save_students
   puts "Saved!"
 end
 
-def load_students(filename = "students.csv")
+def load_students
+  puts "Load which file?"
+  filename = gets.chomp
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    add_student_data(name, cohort, height, hobby = line.chomp.split(","))
+    name, cohort, height, hobby = line.chomp.split(",")
+    add_student_data(name, cohort, height, hobby)
 
 end
 file.close
+puts "Loaded #{@students.count} from #{filename}"
 end
 
 def try_load_students
@@ -76,34 +82,30 @@ def show_students
 end
 
 def input_students
-  puts "Please enter the name, cohort, height, hobby seperated by a comma"
-  puts "To finish, enter '!' "
+  puts "Please enter the name."
+  puts "To finish, enter '!' as name "
 
-  data = STDIN.gets.chomp
+  name = STDIN.gets.chomp
 
-  until data == "!" do
-      add_student_data(data.split(","))
-      end
+  until name == "!" do
+    puts 'Cohort?'
+    cohort = STDIN.gets.chomp
+    puts "Enter height"
+    height = STDIN.gets.chomp
+    puts "Enter hobby"
+    hobby = STDIN.gets.chomp
+    add_student_data(name, cohort, height, hobby)
+    puts "Now we have #{@students.count} students"
+    puts "Enter name"
+    name = STDIN.gets.chomp
 
-      puts "add data"
-
-    #puts 'Cohort?'
-    #cohort = STDIN.gets.chomp
-    #puts "Enter height"
-    #height = STDIN.gets.chomp
-    #puts "Enter hobby"
-    #hobby = STDIN.gets.chomp
-    #add_student_data
-    #puts "Now we have #{@students.count} students"
-    #puts "Enter name"
-    #name = STDIN.gets.chomp
-  #end
+  end
   @students
 end
 
 def print_header
-  title =  "The students of Villains Academy".centre(20)
-  header ="--------------------".centre(20)
+  title =  "The students of Villains Academy".center(20)
+  header ="--------------------".center(20)
   puts title
   puts header
 end
@@ -116,7 +118,11 @@ end
 
 
 def print_footer
+  if @students.count == 1
+    puts "We only have 1 great student"
+  else
   puts "Overall, we have #{@students.count} great students"
+end
 end
 
 
