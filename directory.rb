@@ -1,5 +1,10 @@
 @students = []
 
+
+def add_student_data(name,cohort,height,hobby)
+  @students << {name: name, cohort: cohort, height: height, hobby: hobby}
+end
+
 def save_students
   file = File.open("students.csv", "w")
   @students.each do |student|
@@ -14,8 +19,8 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort, height, hobby = line.chomp.split(",")
-      @students << {name: name, cohort: cohort, height: height, hobby: hobby}
+    add_student_data(name, cohort, height, hobby = line.chomp.split(","))
+
 end
 file.close
 end
@@ -31,8 +36,6 @@ def try_load_students
     exit
   end
 end
-
-
 
 def interactive_menu
   loop do
@@ -73,29 +76,34 @@ def show_students
 end
 
 def input_students
-  puts "Please enter the names of the students and cohort, seperated by a comma"
-  puts "To finish, just hit return three times"
+  puts "Please enter the name, cohort, height, hobby seperated by a comma"
+  puts "To finish, enter '!' "
 
-  name = STDIN.gets.chomp
+  data = STDIN.gets.chomp
 
-  while !name.empty? do
-    puts 'Cohort?'
-    cohort = STDIN.gets.chomp
-    puts "Enter height"
-    height = STDIN.gets.chomp
-    puts "Enter hobby"
-    hobby = STDIN.gets.chomp
-      @students << {name: name, cohort: cohort, height: height, hobby: hobby}
-    puts "Now we have #{@students.count} students"
-    puts "Enter name"
-    name = STDIN.gets.chomp
-  end
+  until data == "!" do
+      add_student_data(data.split(","))
+      end
+
+      puts "add data"
+
+    #puts 'Cohort?'
+    #cohort = STDIN.gets.chomp
+    #puts "Enter height"
+    #height = STDIN.gets.chomp
+    #puts "Enter hobby"
+    #hobby = STDIN.gets.chomp
+    #add_student_data
+    #puts "Now we have #{@students.count} students"
+    #puts "Enter name"
+    #name = STDIN.gets.chomp
+  #end
   @students
 end
 
 def print_header
-  title =  "The students of Villains Academy"
-  header ="--------------------"
+  title =  "The students of Villains Academy".centre(20)
+  header ="--------------------".centre(20)
   puts title
   puts header
 end
@@ -104,13 +112,6 @@ def print_students_list
     @students.each_with_index {|student ,index|
         puts "#{index +1} #{student[:name]} (#{student[:cohort]} cohort)"
       }
-end
-
-def filter_letter
-  puts "Find Names begining with __"
-  letter = gets.chomp
- filter = @students.select {|student| student[:name][0] == letter}
- print(filter)
 end
 
 
